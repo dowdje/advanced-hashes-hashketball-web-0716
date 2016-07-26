@@ -168,3 +168,75 @@ end
   end
   big_shoe_boards
 end
+
+def most_points_scored
+  high_score = 0
+  big_baller = ""
+  game_hash[:home][:players].each do |player, stats|
+    if game_hash[:home][:players][player][:points] > high_score
+      high_score = game_hash[:home][:players][player][:points]
+      big_baller = player
+    end
+  end
+  game_hash[:away][:players].each do |player, stats|
+    if game_hash[:away][:players][player][:points] > high_score
+      high_score = game_hash[:away][:players][player][:points]
+      big_baller = player
+    end
+  end
+  big_baller
+end
+
+def winning_team
+  home_score = 0
+  away_score = 0
+  game_hash[:home][:players].each do |player, stats|
+    home_score += game_hash[:home][:players][player][:points]
+  end
+  game_hash[:away][:players].each do |player, stats|
+    away_score += game_hash[:away][:players][player][:points]
+  end
+  if home_score > away_score
+    return game_hash[:home][:team_name]
+  else
+    return game_hash[:away][:team_name]
+  end
+end
+
+def player_with_longest_name
+  player_name = ""
+  name_length = 0
+  game_hash.each do |location, stuff|
+    stuff[:players].each do |player, stats|
+      if player.split(//).length > name_length
+        name_length = player.split(//).length
+        player_name = player
+      end
+    end
+  end
+  player_name
+end
+
+def long_name_steals_a_ton?
+  long_player_name = ""
+  name_length = 0
+  game_hash.each do |location, stuff|
+    stuff[:players].each do |player, stats|
+      if player.split(//).length > name_length
+        name_length = player.split(//).length
+        long_player_name = player
+      end
+    end
+  end
+  steal_fest = 0
+  big_steals = ""
+  game_hash.each do |location, things|
+    things[:players].each do |player1, stats|
+      if stats[:steals] > steal_fest
+        steal_fest = stats[:steals]
+        big_steals = player1
+      end
+    end
+  end
+  long_player_name == big_steals
+end
